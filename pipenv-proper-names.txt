@@ -1,0 +1,15 @@
+Flask
+Flask-Bootstrap
+Flask-Email
+Flask-Login
+Flask-Mail
+Flask-Moment
+Flask-RESTful
+Flask-Testing
+Flask-WTF
+Jinja2
+MarkupSafe
+SQLAlchemy
+validate_email
+Werkzeug
+WTForms

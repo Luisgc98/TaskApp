@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{% block title %}Something went wrong{% endblock %}</title>
+    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/all.min.css')}}">
+    <style type="text/css">
+        #appbar{
+            background-color: #24323C;
+            font-size: 20px;
+        }
+        .nav-icon{
+            color: white;
+            margin-right: 15px;
+            font-size: 25px;
+        }
+        #pag{
+            margin-top: 20px;
+            font-size: 25px;
+        }
+        .logout{
+            background-color: transparent;
+            color: white;
+            transition: all .3s ease;
+            width: 160px; height: 50px;
+            margin-right: 5px;
+            padding-top: 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .opc{
+            background-color: transparent;
+            color: white;
+            transition: all .3s ease;
+            width: 160px; height: 50px;
+            margin-right: 5px;
+            padding-top: 15px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .opc:hover, .logout:hover{
+            background-color: #84A0B3;
+            color: black;
+        }
+        .active{
+            background-color: #84A0B3;
+            color: black;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% block nav %}
+        <nav class="navbar navbar-default" id="appbar">
+            <div class="navbar-header">
+                <p class="navbar-text text-left"  id="pag" style="color: white;">
+                    <i class="fab fa-python nav-icon"></i>
+                    TaskApp/ Error Page
+                </p>
+            </div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{url_for('Home')}}" style="text-decoration: none;">
+                        <div class="container text-right opc">
+                                Tasks
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('record.addtask')}}" style="text-decoration: none;">
+                        <div class="container text-right opc">
+                                Add Task
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('profile')}}" style="text-decoration: none;">
+                        <div class="container text-right opc">
+                                Profile
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('auth.logout')}}" style="text-decoration: none;">
+                        <div class="container text-right logout ">
+                                Logout<br>
+                                <span style="font-size: 15px;">{{username}}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endblock %}
+    {% block content %}
+        <div class="container">
+            <div class="container-fluid">
+                <div class="modal-header"><h1>Something went wrong (error 500 server).</h1></div>
+                <p>
+                    <h4>Sorry for the inconvenience. Please try another action as we fix the errors on the page or try again later.</h4>
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+    {% block scripts %}
+        {{super()}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    {% endblock %}
+{% endblock %}

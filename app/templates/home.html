@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{% block title %}Tasks{% endblock %}</title>
+    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/all.min.css')}}">
+    <style type="text/css">
+        #appbar{
+            background-color: #24323C;
+            font-size: 20px;
+        }
+        .nav-icon{
+            color: white;
+            margin-right: 15px; margin-left: 5px;
+            font-size: 25px;
+        }
+        #pag{
+            margin-top: 20px;
+            font-size: 25px;
+        }
+        .logout{
+            background-color: transparent;
+            color: white;
+            transition: all .3s ease;
+            width: 160px; height: 50px;
+            margin-right: 5px;
+            padding-top: 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .opc{
+            background-color: transparent;
+            color: white;
+            transition: all .3s ease;
+            width: 160px; height: 50px;
+            margin-right: 5px;
+            padding-top: 15px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .opc:hover, .logout:hover{
+            background-color: #84A0B3;
+            color: black;
+        }
+        .active{
+            background-color: #84A0B3;
+            color: black;
+        }
+        #deletetask{
+            position: absolute;
+            right: 25px; top: 22px;
+            float: left;
+        }
+        .check{
+            float: left;
+            position: absolute;
+            padding: 10px;
+            right: 30px; bottom: 5px;
+            font-size: 25px;
+        }
+        .edit{
+            float: left;
+            position: absolute;
+            padding: 10px;
+            right: 90px; bottom: 10px;
+            font-size: 20px;
+        }
+        #savetask{
+            background-color: green;
+            color: white;
+        }
+        .cancel{
+            float: left;
+            margin-right: 10px;
+        }
+        #search_submit{
+            transition: all .3s ease;
+            background-color: #24323C;
+            border: #84A0B3 3px solid;
+            color: white;
+        }
+        #search_submit:hover{
+            background-color: #84A0B3;
+            border: #24323C 3px solid;
+            color: black;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% block nav %}
+        <nav class="navbar navbar-default" id="appbar">
+            <div class="navbar-header">
+                <p class="navbar-text text-left"  id="pag" style="color: white;">
+                    <i class="fab fa-python nav-icon"></i>
+                    TaskApp/ Tasks
+                </p>
+            </div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{url_for('Home')}}" style="text-decoration: none;">
+                        <div class="container text-right opc active">
+                                Tasks
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('record.addtask')}}" style="text-decoration: none;">
+                        <div class="container text-right opc">
+                                Add Task
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <form class="navbar-form navbar-left" name="search_task" id="search_task" style="margin-top: 20px; ">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Find Task" name="search" id="search" required>
+                        </div>
+                        {{wtf.form_field(search_form.search_submit, class="btn btn-default")}}
+                    </form>
+                </li>
+                <li>
+                    <a href="{{url_for('profile')}}" style="text-decoration: none;">
+                        <div class="container text-right opc">
+                                Profile
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('auth.logout')}}" style="text-decoration: none;">
+                        <div class="container text-right logout ">
+                                Logout<br>
+                                <span style="font-size: 15px;">{{username}}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endblock %}
+    {% block content %}
+        <div class="container">
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button"
+                        data-dismiss="alert"
+                        class="close"
+                >&times;</button>
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container">
+            <div class="container-fluid">
+                {% if tasks %}
+                    {% for task in tasks %}
+                        <ul class="list-group">
+                            <li class="list-group-item" style="height: 180px;">
+                                <div class="modal-header"><h4>{{task.task_name}}</h4>{{wtf.quick_form(delete, action=url_for('record.deletetask', task=task.id, pag=pag))}}</div>
+                                <h5>Description: {{task.task}}</h5>
+                                <h5>Date: {{task.task_date}}</h5>
+                                <h5>Status: {% if task.status %} DONE {% else %} PENDING {% endif %}</h5>
+                                <button type="button" class="edit" onclick='edit("{{task.task_name}}", "{{task.task}}", "{{task.id}}", "{{pag}}")' data-toggle="modal" data-target="#modaledit" style="background-color: transparent; border: transparent;">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                                <form class="check" action="{{url_for('record.status', task=task.id, pag=pag)}}">
+                                    <div>
+                                        {% if task.status == False %}
+                                            <button type="submit" style="background-color: transparent; border: transparent; ">
+                                                <i class="fas fa-check-square"></i>
+                                            </button>
+                                        {% else %}
+                                            <button type="submit" style="background-color: transparent; border: transparent;">
+                                                <i class="fas fa-check-square" style="color: green;"></i>
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </form>
+                                <div class="modal fade" id="modaledit" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <div class="modal-title">
+                                                    <h4><p id="title"></p></h4>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{url_for('record.edittask', task=task.id, pag=pag)}}" method="post" name="edit_task">
+                                                    {{wtf.form_field(edit_form.task_name)}}
+                                                    {{wtf.form_field(edit_form.task)}}
+                                                    {{wtf.form_field(edit_form.savetask)}}
+                                                    <input type="button" class="btn btn-default btn-danger cancel" data-dismiss="modal" value="Cancelar">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                {% else %}
+                    <h5>Sin tareas.</h5>
+                {% endif %}
+            </div>
+        </div>
+    {% endblock %}
+    {% block scripts %}
+        {{super()}}
+        {{ moment.include_moment() }}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script type="text/javascript">
+            function edit(task_name, task, id_task, pag){
+                document.getElementById('title').textContent = task_name;
+                document.forms.edit_task.task_name.value = task_name;
+                document.forms.edit_task.task.value = task;
+                var edit = document.getElementsByName('edit_task')[0];
+                var action = '/record/home/edittask/'+escape(id_task)+'/'+pag;
+                console.log(action);
+                /*action = decodeURI(action)
+                console.log(action);*/
+                edit.setAttribute('action', action);
+                console.log(edit);
+            }
+
+            function tasksearch(form_search){
+                var form_search = document.forms.search_task.search.value;
+                var url_form = '/record/home/searchtask/'+form_search;
+                console.log(url_form);
+                var form = document.getElementById('search_task');
+                form.setAttribute('action', url_form);
+            }
+
+            var search = document.getElementById('search');
+            search.addEventListener('input', tasksearch)
+        </script>
+    {% endblock %}
+{% endblock %}

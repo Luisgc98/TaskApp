@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{% block title %}Profile{% endblock %}</title>
+    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/all.min.css')}}">
+    <style type="text/css">
+        #appbar{
+            background-color: #24323C;
+            font-size: 20px;
+        }
+        .nav-icon{
+            color: white;
+            margin-right: 15px;
+            font-size: 25px;
+        }
+        #pag{
+            margin-top: 20px;
+            font-size: 25px;
+        }
+        .logout{
+            background-color: transparent;
+            color: white;
+            transition: all .3s ease;
+            width: 160px; height: 50px;
+            margin-right: 5px;
+            padding-top: 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .opc{
+            background-color: transparent;
+            color: white;
+            transition: all .3s ease;
+            width: 160px; height: 50px;
+            margin-right: 5px;
+            padding-top: 15px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .opc:hover, .logout:hover{
+            background-color: #84A0B3;
+            color: black;
+        }
+        .active{
+            background-color: #84A0B3;
+            color: black;
+        }
+        #saveedit{
+            background-color: green;
+            color: white;
+            float: right;
+            margin-right: 180px; margin-top: 10px;
+        }
+        #deleteuser{
+            margin-top: 10px;
+        }
+        #save_password{
+            background-color: green;
+            color: white;
+        }
+        #show1, #show2, #show3{
+            position: relative;
+            top: -13px;
+            margin-left: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% block nav %}
+        <nav class="navbar navbar-default" id="appbar">
+            <div class="navbar-header">
+                <p class="navbar-text text-left"  id="pag" style="color: white;">
+                    <i class="fab fa-python nav-icon"></i>
+                    TaskApp/ Profile: {{username}}
+                </p>
+            </div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{url_for('Home')}}" style="text-decoration: none;">
+                        <div class="container text-right opc">
+                                Tasks
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('record.addtask')}}" style="text-decoration: none;">
+                        <div class="container text-right opc">
+                                Add Task
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('profile')}}" style="text-decoration: none;">
+                        <div class="container text-right opc active">
+                                Profile
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('auth.logout')}}" style="text-decoration: none;">
+                        <div class="container text-right logout ">
+                                Logout<br>
+                                <span style="font-size: 15px;">{{username}}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endblock %}
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+            {% if upd == 'False' %}
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button"
+                            data-dismiss="alert"
+                            class="close"
+                    >&times;</button>
+                    {{message}}
+                </div>
+            {% else %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button"
+                            data-dismiss="alert"
+                            class="close"
+                    >&times;</button>
+                    {{message}}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="container">
+        <form action="{{url_for('record.editprofile', name='_', mail='_')}}" name="profile_edit" id="profile_edit" class="form-group" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="font-size: 30px;">Profile Dates</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 20%;"><b>Username: </b></td>
+                        <td><input type="text" id="username" name="username" value="{{username}}" class="form-control" required disabled></td>
+                        <td>
+                            <button type="button" class="edit">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;"><b>E-mail: </b></td>
+                        <td><input type="email" id="email" name="email" value="{{email}}" class="form-control" required disabled></td>
+                        <td>
+                            <button type="button" class="edit" >
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;"><b>Password: </b></td>
+                        <td>{{password.encode('utf8').split(':')[2]}}</td>
+                        <td>
+                            <button type="button" class="edit" data-toggle="modal" data-target="#modaledit">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;"><b>Init Date: </b></td>
+                        <td>{{init_date}}</td>
+                        <td>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;"><b>#Tasks: </b><span style="margin-left: 30px;">{{num_tasks}}</span></td>
+                        <td style="width: 20%;"><b>#Tasks Done: </b><span style="margin-left: 30px;">{{tasks_done}}</span></td>
+                        <td style="width: 20%;"><b>#Tasks Pending: </b><span style="margin-left: 30px;">{{tasks_pending}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" name="save_edits" value="Save Edits" id="saveedit" class="btn btn-default btn-success" disabled>
+            <button type="button" name="delete_user" id="deleteuser" class="btn btn-default btn-danger" data-toggle="modal" data-target="#modaldelete">Delete User</button>
+            <div style="margin-left: 130px; margin-top: -37px;">This button deletes your user<br> and all your data.</div>
+        </form>
+        <div class="modal fade" id="modaledit" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="modal-title">
+                            <h4><p id="title">Edit Password</p></h4>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{url_for('record.editpasswd', current='', new='', confir='')}}" method="post" name="edit_password">
+                            <div style="margin-bottom: 5px;">
+                                {{wtf.form_field(edit_password.current_password)}}
+                                <input type="checkbox" id="show1" class="input-group input-group-addon input-sm " onclick="visibility1()"><span style="position: relative; margin-left: 20px; top: -10px;">Show current password</span>
+                            </div>
+                            <div style="margin-bottom: 5px;">
+                                {{wtf.form_field(edit_password.new_password)}}
+                                <input type="checkbox" id="show2" class="input-group input-group-addon input-sm " onclick="visibility2()"><span style="position: relative; margin-left: 20px; top: -10px;">Show new password</span>
+                            </div>
+                            <div style="margin-bottom: 5px;">
+                                {{wtf.form_field(edit_password.confirmation_new_password)}}
+                                <input type="checkbox" id="show3" class="input-group input-group-addon input-sm " onclick="visibility3()"><span style="position: relative; margin-left: 20px; top: -10px;">Show confirmation new password</span>
+                            </div>
+                            {{wtf.form_field(edit_password.save_password)}}
+                            <input type="button" class="btn btn-default btn-danger cancel" data-dismiss="modal" value="Cancel">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modaldelete" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="modal-title">
+                            <h4><p id="title">Are you sure you want to delete your profile?</p></h4>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{url_for('record.deleteuser', user='')}}" method="post" name="delete_user">
+                            <button type="button" onclick="deleteUser('{{id}}')" name="confir" id="confir" class="btn btn-default btn-success">Accept</button>
+                            <input type="button" class="btn btn-default btn-danger cancel" data-dismiss="modal" value="Cancel">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block scripts %}
+        {{super()}}
+        <script type="text/javascript">
+            var edit_user = document.getElementById('username');
+            var edit_email = document.getElementById('email');
+            var editbutton = document.getElementById('saveedit');
+
+            function remove_disabled_user(){
+                edit_user.removeAttribute('disabled');
+            }
+            function remove_disabled_email(){
+                edit_email.removeAttribute('disabled');
+            }
+            function remove_disabled_save(){
+                editbutton.removeAttribute('disabled');
+            }
+
+            var edit = document.getElementsByClassName('edit');
+            edit[0].addEventListener('click', remove_disabled_user);
+            edit[1].addEventListener('click', remove_disabled_email);
+            edit_user.addEventListener('input', remove_disabled_save);
+            edit_email.addEventListener('input', remove_disabled_save);
+
+            function visibility1(){
+                var show1 = document.getElementById('current_password');
+                if (show1.type == 'password'){
+                    show1.type = 'text';
+                } else{
+                    show1.type = 'password';
+                }
+            }
+            function visibility2(){
+                var show2 = document.getElementById('new_password');
+                if (show2.type == 'password'){
+                    show2.type = 'text';
+                } else{
+                    show2.type = 'password';
+                }
+            }
+            function visibility3(){
+                var show3 = document.getElementById('confirmation_new_password');
+                if (show3.type == 'password'){
+                    show3.type = 'text';
+                } else{
+                    show3.type = 'password';
+                }
+            }
+            function edit_pass(){
+                var current = document.forms.edit_password.current_password.value;
+                var new_pass = document.forms.edit_password.new_password.value;
+                var confir = document.forms.edit_password.confirmation_new_password.value;
+                var action = '/record/profile/editpasswd/'+escape(current)+'/'+escape(new_pass)+'/'+escape(confir);
+                console.log(action);
+                var edit = document.getElementsByName('edit_password')[0];
+                edit.setAttribute('action', action);
+                console.log(edit);
+            }
+            var edit_url = document.getElementById('confirmation_new_password');
+            edit_url.addEventListener('input', edit_pass);
+
+            function edit_profile(){
+                var username = document.forms.profile_edit.username.value;
+                var email = document.forms.profile_edit.email.value;
+                var form = document.getElementById('profile_edit');
+                var action = '/record/profile/editprofile/'+escape(username)+'/'+escape(email);
+                form.setAttribute('action', action);
+                console.log(form);
+            }
+            var saveedit = document.getElementById('saveedit');
+            saveedit.addEventListener('click', edit_profile);
+
+            function deleteUser(id){
+                var action = '/record/profile/deleteuser/'+escape(id);
+                location.href = action;
+            }
+
+        </script>
+    {% endblock %}
+{% endblock %}

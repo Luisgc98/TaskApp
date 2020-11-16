@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>{% block title %}Signup{% endblock %}</title>
+    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/all.min.css')}}">
+    <style type="text/css">
+        .header{
+            background-color: #24323C;
+            color: white;
+            position: relative;
+            width: 99.8%;
+            top: -39px; left: 1px;
+            padding: 10px;
+        }
+        #submit{
+            width: 100%;
+            background-color: #24323C;
+            color: white;
+            transition: all .3s ease;
+        }
+        #submit:hover{
+            background-color: transparent;
+            color: black;
+        }
+        .title{
+            margin-left: 50px;
+        }
+        .back{
+            position: absolute;
+            margin-top: 30px; margin-left: 40px;
+            font-size: 30px;
+        }
+        #show1, #show2{
+            position: relative;
+            top: -8px;
+            margin-left: 10px;
+        }
+        #nota{
+            position: relative;
+            font-size: 13px;
+            top: -8px;
+        }
+        .icon{
+            font-size: 35px;
+            position: absolute;
+            margin-left: -115px; margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="header page-header text-capitalize text-center">
+        <div class="back"><a href="{{url_for('auth.login')}}"><i class="fas fa-backspace" style="color: white;"></i></a></div>
+        <i class="fab fa-python icon"></i><h1>TaskApp</h1>
+        <h4>/Sign Up</h4>
+    </div>
+    <div class="page-header text-capitalize text-left title">
+        <h3>/Registry</h3>
+    </div>
+    <div class="content container">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button"
+                    data-dismiss="alert"
+                    class="close"
+            >&times;</button>
+            {{message}}
+        </div>
+        {% endfor %}
+        
+        <!--{{wtf.quick_form(signup_form)}}-->
+        <form action="{{url_for('auth.signup')}}" class="form-group" method="post" style="margin-bottom: 50px;">
+            {{wtf.form_field(signup_form.email)}}
+            <div id="nota"><ul><b>Note: </b>Email should be @gmail.com</ul></div>
+            {{wtf.form_field(signup_form.username)}}
+            <div id="nota"><ul><b>Note: </b>The username must have two names separated by a period (user.name)</ul></div>
+            <div style="margin-bottom: 15px;">
+                {{wtf.form_field(signup_form.password)}}
+                <div id="nota"><ul><b>Note: </b>The password must be alphanumeric and must contain an uppercase letter.</ul></div>
+                <input type="checkbox" id="show1" class="input-group input-group-addon input-sm " onclick="visibility1()"><span style="position: relative; margin-left: 20px; top: -5px;">Show Password</span>
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{wtf.form_field(signup_form.password_confirmation)}}
+                <input type="checkbox" id="show2" class="input-group input-group-addon input-sm " onclick="visibility2()"><span style="position: relative; margin-left: 20px; top: -5px;">Show Password Confirmation</span>
+            </div>
+            {{wtf.form_field(signup_form.submit)}}
+        </form>
+    </div>
+
+    {% block scripts %}
+        {{super()}}
+        <script type="text/javascript">
+            function visibility1(){
+                var show1 = document.getElementById('password');
+                if (show1.type == 'password'){
+                    show1.type = 'text';
+                } else{
+                    show1.type = 'password';
+                }
+            }
+            function visibility2(){
+                var show2 = document.getElementById('password_confirmation');
+                if (show2.type == 'password'){
+                    show2.type = 'text';
+                } else{
+                    show2.type = 'password';
+                }
+            }
+        </script>
+    {% endblock %}
+{% endblock %}
