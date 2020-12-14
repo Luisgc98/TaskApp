@@ -1,0 +1,59 @@
+.header{
+    height: 53px;
+    font-size: 15px;
+    margin-bottom: 100px;
+}
+.header .navbar-header .navbar-brand{
+    font-size: 25px;
+    padding: 13px;
+}
+.header .navbar-header .navbar-brand .glyphicon-check{
+    font-size: 20px;
+}
+.box_login{
+    /*background-color: aliceblue;*/
+    background-color: #E2EAF1;
+    height: 450px; width: 400px;
+    border-radius: 5px;
+}
+.box_login .glyphicon-check{
+    font-size: 70px;
+    margin-top: 50px; margin-left: 130px;
+}
+.box_login .icon-header p{
+    font-size: 17px;
+    margin-left: 130px;
+}
+.box_login .icon-header{
+    width: 350px;
+}
+.form_login{
+    width: 350px;
+    margin-top: 20px;
+}
+.box_login #box_login_content p{
+    font-size: 25px;
+    margin-left: 100px; margin-top: 10px;
+}
+#login_submit{
+    width: 100%;
+    margin-top: 25px;
+    background-color: #262626;
+    color: white;
+}
+#login_submit:hover{
+    opacity: 0.7;
+}
+#remember{
+    position: relative;
+    bottom: 70px;
+}
+#show_passwd{
+    position: relative;
+    bottom: 92px; left: 175px;
+}
+#login_help{
+    margin: 1em auto;
+    text-align: center;
+    width: 350px;
+}

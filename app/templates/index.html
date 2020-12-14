@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <title>{% block title %}Inicio de Sesión{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style/login.css')}}">
+    <style type="text/css">
+        #signup .signup-header{
+            height: 150px; width: 400px;
+            margin-top: 50px;
+        }
+        #signup .signup-header .glyphicon-check{
+            font-size: 70px;
+            margin-left: 130px;
+        }
+        #signup .signup-header p{
+            font-size: 17px;
+            margin-left: 130px;
+        }
+        #signup .icon-header{
+            margin-bottom: -20px;
+        }
+        #signup .icon-header, .p-header{
+            width: 350px;
+        }
+        #signup .signup-header .p-header{
+            margin-left: 10px;
+            margin-top: -30px;
+        }
+        #signup_content{
+            background-color: aqua;
+            margin-left: -100px;
+            width: 700px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% block nav %}
+        <nav class="navbar navbar-inverse header">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ url_for('auth.login') }}"><span class="glyphicon glyphicon-check"></span>&nbsp;TaskApp</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right" role="tablist">
+                    <li class="active">
+                        <a href="#signup" data-toggle="tab">
+                            <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Registrarse
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#login" class="active" data-toggle="tab">
+                            <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Inicio de Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+
+    {% block content %}
+        <div class="tab-content">
+            <div id="login" class="tab-pane fade">
+                <div class="container box_login">
+                    <div class="container icon-header">
+                        <span class="glyphicon glyphicon-check"></span>
+                        <p>TaskApp</p>
+                    </div>
+                    <div id="box_login_content">
+                        <p>Inicio de Sesión</p>
+                        <div class="container form_login">
+                            {{ wtf.quick_form(login_form) }}
+                            <div id="remember"><input type="checkbox">&nbsp;Recuérdame</div>
+                            <div id="show_passwd"><input type="checkbox" id="show">&nbsp;Mostrar Contraseña</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" id="login_help">
+                    <p>
+                        ¿No tienes Cuenta? <a>Registrate</a>
+                    </p>
+                </div>
+            </div>
+            <div id="signup" class="tab-pane active">
+                <div class="container signup-header">
+                    <div class="container icon-header">
+                        <span class="glyphicon glyphicon-check"></span>
+                        <p>TaskApp</p><hr>
+                        <div class="container p-header">
+                            <p><h2>Registro de Usuario</h2></p>
+                        </div>
+                    </div>
+                    <div id="signup_content">
+                        <div class="signup_login">
+                            <form class="form-group">
+                                <div class="col-xs-4">
+                                    {{ wtf.form_field(signup_form.email, class="form-control") }}
+                                    {{ wtf.form_field(signup_form.names, class="form-control") }}
+                                    {{ wtf.form_field(signup_form.surnames, class="form-control") }}
+                                </div>
+                                <div class="col-xs-4">
+                                    {{ wtf.form_field(signup_form.area, class="form-control") }}
+                                    {{ wtf.form_field(signup_form.new_password, class="form-control") }}
+                                    {{ wtf.form_field(signup_form.password_confirmation, class="form-control") }}
+                                </div>
+                                <div class=" signup_submit">
+                                    {{ wtf.form_field(signup_form.signup_submit) }}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block scripts %}
+        {{ super() }}
+        <script type="text/javascript" src="{{ url_for('static', filename='js/login.js') }}"></script>
+    {% endblock %}
+{% endblock %}
