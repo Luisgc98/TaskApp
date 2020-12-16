@@ -1,59 +1,133 @@
-.header{
+.header {
     height: 53px;
     font-size: 15px;
     margin-bottom: 100px;
 }
-.header .navbar-header .navbar-brand{
+
+.header .navbar-header .navbar-brand {
     font-size: 25px;
     padding: 13px;
 }
-.header .navbar-header .navbar-brand .glyphicon-check{
+
+.header .navbar-header .navbar-brand .glyphicon-check {
     font-size: 20px;
 }
-.box_login{
+
+.box_login {
     /*background-color: aliceblue;*/
     background-color: #E2EAF1;
-    height: 450px; width: 400px;
+    height: 450px;
+    width: 400px;
     border-radius: 5px;
 }
-.box_login .glyphicon-check{
+
+.box_login .glyphicon-check {
     font-size: 70px;
-    margin-top: 50px; margin-left: 130px;
+    margin-top: 50px;
+    margin-left: 130px;
 }
-.box_login .icon-header p{
+
+.box_login .icon-header p {
     font-size: 17px;
     margin-left: 130px;
 }
-.box_login .icon-header{
+
+.box_login .icon-header {
     width: 350px;
 }
-.form_login{
+
+.form_login {
     width: 350px;
     margin-top: 20px;
 }
-.box_login #box_login_content p{
+
+.box_login #box_login_content p {
     font-size: 25px;
-    margin-left: 100px; margin-top: 10px;
+    margin-left: 100px;
+    margin-top: 10px;
 }
-#login_submit{
+
+#login_submit {
     width: 100%;
     margin-top: 25px;
     background-color: #262626;
     color: white;
 }
-#login_submit:hover{
+
+#login_submit:hover {
     opacity: 0.7;
 }
-#remember{
+
+#remember {
     position: relative;
     bottom: 70px;
 }
-#show_passwd{
+
+#show_passwd {
     position: relative;
-    bottom: 92px; left: 175px;
+    bottom: 92px;
+    left: 175px;
 }
-#login_help{
+
+#login_help {
     margin: 1em auto;
     text-align: center;
     width: 350px;
+}
+
+
+/* Estilo de Signup */
+
+#signup .signup-header {
+    height: 150px;
+    width: 400px;
+    margin-top: 45px;
+    margin-left: 475px;
+}
+
+#signup .signup-header .glyphicon-check {
+    font-size: 70px;
+    margin-left: 130px;
+}
+
+#signup .signup-header p {
+    font-size: 17px;
+    margin-left: 130px;
+}
+
+#signup .icon-header {
+    margin-bottom: -20px;
+}
+
+#signup .icon-header,
+.p-header {
+    width: 350px;
+}
+
+#signup .signup-header .p-header {
+    margin-left: 10px;
+    margin-top: -30px;
+    margin-bottom: 20px;
+}
+
+#signup_content {
+    /*background-color: aqua;*/
+    width: 850px;
+    margin: auto -16em;
+}
+
+.field_signup {
+    margin: 10px;
+    width: 400px;
+}
+
+#signup_submit {
+    background-color: #262626;
+    color: white;
+    width: 80%;
+    margin: 1em 6em;
+}
+
+#signup_submit:hover {
+    opacity: 0.7;
 }

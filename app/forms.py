@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, TextField, SubmitField
+from wtforms.fields.core import SelectField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Email
 
@@ -13,7 +14,7 @@ class SignUpForm(FlaskForm):
     email = EmailField('Correo', validators=[DataRequired(), Email()])
     names = StringField('Nombre(s)', validators=validators)
     surnames = StringField('Apellidos', validators=validators)
-    area = StringField('Área', validators=validators)
+    area = SelectField('Área', validators=validators, choices=[('', '--Seleccionar área--'), ('sinesis', 'SINESIS'), ('dev', 'DEV'), ('space', 'SPACE'), ('aov', 'AOV'), ])
     new_password = PasswordField('Nueva contraseña', validators=validators)
     password_confirmation = PasswordField('Confirmar contraseña', validators=validators)
     signup_submit = SubmitField('Registrar')
