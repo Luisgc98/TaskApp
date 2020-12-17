@@ -7,12 +7,12 @@
             <a class="navbar-brand" href="{{ url_for('auth.login') }}"><span class="glyphicon glyphicon-check"></span>&nbsp;TaskApp</a>
         </div>
         <ul class="nav navbar-nav navbar-right" role="tablist">
-            <li>
+            <li class="opc_tabs">
                 <a href="#signup" data-toggle="tab">
                     <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Registrarse
                 </a>
             </li>
-            <li class="active">
+            <li class="opc_tabs active">
                 <a href="#login" class="active" data-toggle="tab">
                     <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Inicio de Sesión
                 </a>
@@ -20,6 +20,14 @@
         </ul>
     </div>
 </nav>
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-info alert-dismissible" id="alert-info">
+        <button type="button" class="close" data-dismiss="alert">
+            &times;
+        </button>
+        {{message}}
+    </div>
+{% endfor %}
 {% endblock %} {% block content %}
 <div class="tab-content">
     <div id="login" class="tab-pane active">
@@ -39,7 +47,7 @@
         </div>
         <div class="container" id="login_help">
             <p>
-                ¿No tienes Cuenta? <a>Registrate</a>
+                ¿No tienes Cuenta? <a href="#signup" data-toggle="tab" id="a_signup">Registrate</a>
             </p>
         </div>
     </div>
@@ -57,13 +65,14 @@
             </div>
             <div id="signup_content">
                 <div class="signup_login">
-                    <form action="{{url_for('auth.signup')}}" method="post" name="signup_login" id="signup_login">
+                    <form action="{{url_for('auth.signup')}}" method="post" name="signup_login" id="signup_login" class="was-validated">
                         <table>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div class="field_signup">
-                                            {{ wtf.form_field(signup_form.email, class="form-control") }}
+                                        <div class="field_signup form-group">
+                                            {{ wtf.form_field(signup_form.email, class="form-control", onblur="confirmation(document.getElementById('email'))") }}
+                                            <div class="validate"></div>
                                         </div>
                                     </td>
                                     <td>
@@ -75,24 +84,28 @@
                                 <tr>
                                     <td>
                                         <div class="field_signup">
-                                            {{ wtf.form_field(signup_form.names, class="form-control") }}
+                                            {{ wtf.form_field(signup_form.names, class="form-control", onblur="confirmation(document.getElementById('names'))") }}
+                                            <div class="validate"></div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="field_signup">
-                                            {{ wtf.form_field(signup_form.new_password, class="form-control") }}
+                                            {{ wtf.form_field(signup_form.new_password, class="form-control", onblur="confirmation(document.getElementById('new_password'))") }}
+                                            <div class="validate"></div>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div class="field_signup">
-                                            {{ wtf.form_field(signup_form.surnames, class="form-control") }}
+                                            {{ wtf.form_field(signup_form.surnames, class="form-control", onblur="confirmation(document.getElementById('surnames'))") }}
+                                            <div class="validate"></div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="field_signup">
-                                            {{ wtf.form_field(signup_form.password_confirmation, class="form-control") }}
+                                            {{ wtf.form_field(signup_form.password_confirmation, class="form-control", onblur="confirmation(document.getElementById('password_confirmation'))") }}
+                                            <div class="validate"></div>
                                         </div>
                                     </td>
                                 </tr>

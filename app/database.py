@@ -10,6 +10,7 @@ class users(db.Model):
     email = db.Column(db.String)
     area = db.Column(db.String)
     init_date = db.Column(db.Date)
+    role = db.Column(db.String)
     
     def __init__(self, user_name, password, init_date, email, area):
         self.user_name = user_name
@@ -17,6 +18,7 @@ class users(db.Model):
         self.email = email
         self.init_date = init_date
         self.area = area
+        self.role = 'DEFAULT'
     
     @staticmethod
     def all_users():
