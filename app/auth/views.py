@@ -1,9 +1,9 @@
 from flask import render_template, redirect, url_for, request, flash
-from datetime import datetime as current_date
 from . import auth
 from app.forms import LoginForm, SignUpForm
 from app.database import users
 from app.mail_senders import mail_sender_wel
+from werkzeug.security import generate_password_hash
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -12,8 +12,20 @@ def login():
     
     if login_form.validate_on_submit() \
         and 'login_submit' in request.form:
-        print(request.form)
-
+        login = login_form.validate_user()
+        if login == False:
+            flash('Contraseña incorrecta.')
+        elif login == None:
+            flash('Correo o Nombre de Usuario incorrecto.')
+            return redirect(url_for('auth.login'))
+        else:
+            role = login_form.validate_role(user=login)
+            if role:
+                flash(f'Bienvenido {login.user_name}')
+                return redirect(url_for('main.home'))
+            else:
+                flash('Rol aún asignado. Consulte con su Coach para mas información.')
+            
     dates = {
         'login_form': login_form,
         'signup_form': signup_form,
@@ -26,27 +38,12 @@ def signup():
     signup_form = SignUpForm()
     list_users = users.all_users()
     if 'signup_submit' in request.form:
-        exist = False
-        email = signup_form.email.data.strip()
-        for user in list_users:
-            if email == user.email: 
-                exist = True
-        if exist:
-            flash('Usuario ya registrado con esta cuenta.')
+        signup = signup_form.validate_signup(list_users)
+        if signup == False:
+            flash('Usuario ya registrado con este correo.')
         else:
-            password = signup_form.new_password.data.strip()
-            user_name = signup_form.names.data.strip()+' '+signup_form.surnames.data.strip()
-            area = signup_form.area.data.strip()
-            init_date = current_date.now().date()
-            new_user = users(
-                user_name=user_name,
-                password=password,
-                email=email,
-                area=area,
-                init_date=init_date
-            )
-            send_mail = mail_sender_wel(email=email, user_name=user_name, password=password)
-            message = users.add_user(new_user=new_user)
+            message = users.add_user(new_user=signup)
+            send_mail = signup_form.send_mail(email=signup.email, user_name=signup.user_name, password=signup_form.new_password)
             flash(message)
             flash(send_mail)
 

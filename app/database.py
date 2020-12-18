@@ -35,6 +35,11 @@ class users(db.Model):
         return user
 
     @staticmethod
+    def user_by_email(email):
+        user = users.query.filter_by(email=email).first()
+        return user
+
+    @staticmethod
     def add_user(new_user):
         try:
             db.session.add(new_user)

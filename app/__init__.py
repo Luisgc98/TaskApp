@@ -6,6 +6,7 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
 from .auth import auth
+from .main import main
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -20,6 +21,7 @@ def create_app():
     app = Flask(__name__, template_folder='templates')
     app.config.from_object(Config)
     app.register_blueprint(auth)
+    app.register_blueprint(main)
 
     bootstrap.init_app(app)
     db.init_app(app)

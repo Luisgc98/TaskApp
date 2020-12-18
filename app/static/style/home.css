@@ -1,0 +1,17 @@
+.header {
+    height: 53px;
+    font-size: 15px;
+}
+
+.header .navbar-header .navbar-brand {
+    font-size: 25px;
+    padding: 13px;
+}
+
+.header .navbar-header .navbar-brand .glyphicon-check {
+    font-size: 20px;
+}
+
+#alert-info{
+    margin-top: -20px;
+}
