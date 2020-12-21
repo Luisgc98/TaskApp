@@ -12,6 +12,41 @@
     font-size: 20px;
 }
 
-#alert-info{
+#alert-info {
     margin-top: -20px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.home_opc {
+    margin: 2em 5em;
+    border: black 1px solid;
+    height: 90px;
+    font-size: 20px;
+}
+
+.task_select {
+    width: 900px;
+}
+
+.descriptions {
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.btn-description {
+    position: absolute;
+    margin: -2.3em 70em;
+}
+
+.page-title {
+    font-size: 30px;
+}
+
+.glyphicon-file,
+.glyphicon-list-alt {
+    margin-right: 10px;
 }

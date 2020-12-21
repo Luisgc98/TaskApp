@@ -1,7 +1,10 @@
+from sqlalchemy.sql.schema import ForeignKey
 from . import SQLAlchemy
 
 db = SQLAlchemy()
 
+#---------------------------------------------------------
+# Clase de los Usuarios.
 class users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -48,3 +51,45 @@ class users(db.Model):
         except:
             db.session.rollback()
             return 'Fallo en el registro. Inténtelo de nuevo más tarde.'
+
+#---------------------------------------------------------
+# Clase de la tareas.
+class tasks(db.Model):
+    __tablename__ = 'tasks'
+    id = db.Column(db.Integer, primary_key=True)
+    task_name = db.Column(db.String)
+    description = db.Column(db.String)
+    group_id = db.Column(db.String)
+    publication_date = db.Column(db.Date)
+    delivery_date = db.Column(db.Date)
+    user_publishes = db.Column(db.String)
+
+    def __init__(self, task_name, description, group_id, publication_date, delivery_date, user_publishes):
+        self.task_name = task_name
+        self.description = description
+        self.group_id = group_id
+        self.publication_date = publication_date
+        self.delivery_date = delivery_date
+        self.user_publishes = user_publishes
+
+    @staticmethod
+    def get_all_tasks():
+        return tasks.query.all()
+
+#------------------------------------------
+# Clase de las tareas de los usuarios.
+class tasks_users(db.Model):
+    __tablename__ = 'tasks_users'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(users.id))
+    task_id = db.Column(db.Integer, db.ForeignKey(tasks.id))
+    status = db.Column(db.String)
+    qualification = db.Column(db.String)
+    delivery_date = db.Column(db.Date)
+
+    def __init__(self, user_id, task_id, status, qualification, delivery_date):
+        self.user_id = user_id
+        self.task_id = task_id
+        self.status = status
+        self.qualification = qualification
+        self.delivery_date = delivery_date

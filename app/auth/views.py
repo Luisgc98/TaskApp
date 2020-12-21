@@ -1,9 +1,9 @@
 from flask import render_template, redirect, url_for, request, flash
+from flask_login import login_user, logout_user, login_required, current_user
 from . import auth
 from app.forms import LoginForm, SignUpForm
 from app.database import users
-from app.mail_senders import mail_sender_wel
-from werkzeug.security import generate_password_hash
+from validate_email import validate_email
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -42,9 +42,20 @@ def signup():
         if signup == False:
             flash('Usuario ya registrado con este correo.')
         else:
-            message = users.add_user(new_user=signup)
-            send_mail = signup_form.send_mail(email=signup.email, user_name=signup.user_name, password=signup_form.new_password)
-            flash(message)
-            flash(send_mail)
+            if validate_email(signup.email, verify=True):
+                message = users.add_user(new_user=signup)
+                send_mail = signup_form.send_mail(email=signup.email, user_name=signup.user_name, password=signup_form.new_password)
+                flash(message)
+                flash(send_mail)
+            else:
+                flash('Verifique que su Correo sea correcto.')
+
+    return redirect(url_for('auth.login'))
+
+@auth.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash('Que vuelva pronto.')
 
     return redirect(url_for('auth.login'))

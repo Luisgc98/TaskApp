@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block head %} {{super()}}
+<title>{% block title %}Examen Python{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style/examen1.css')}}">
+<style type="text/css">
+    .header {
+        height: 53px;
+        font-size: 15px;
+    }
+    
+    .header .navbar-header .navbar-brand {
+        font-size: 25px;
+        padding: 13px;
+    }
+    
+    .header .navbar-header .navbar-brand .glyphicon-check {
+        font-size: 20px;
+    }
+    
+    #alert-info {
+        margin-top: -20px;
+    }
+    
+    .page-title {
+        font-size: 30px;
+    }
+    
+    .glyphicon-file,
+    .glyphicon-list-alt {
+        margin-right: 10px;
+    }
+</style>
+{% endblock %} {% block body %} {% block nav %}
+<nav class="navbar navbar-inverse header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('main.home') }}"><span class="glyphicon glyphicon-check"></span>&nbsp;TaskApp</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right" role="tablist">
+            <li class="opc_tabs active">
+                <a href="{{ url_for('auth.login') }}">
+                    <span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Cerrar Sesión
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %} {% for message in get_flashed_messages() %}
+<div class="alert alert-info alert-dismissible" id="alert-info">
+    <button type="button" class="close" data-dismiss="alert">&times;
+        </button>{{message}}
+</div>
+{% endfor %} {% block content %}
+<div class="container modal-header page-title">
+    <span class="glyphicon glyphicon-list-alt"></span>Examen1
+</div>
+<div class="container">
+    <div class="container-fluid">
+        <form action="{{url_for('do_task.examen1')}}" method="post">
+            {{wtf.quick_form(form_exam)}}
+        </form>
+    </div>
+</div>
+{% endblock %} {% endblock %}

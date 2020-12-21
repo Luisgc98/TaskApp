@@ -2,14 +2,46 @@
 <title>{% block title %}Inicio{% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style/home.css')}}">
 <style type="text/css">
-    .glyphicon-menu-hamburger {
-        color: white;
+    a {
+        text-decoration: none;
+        color: black;
     }
-</style> {% endblock %} {% block body %} {% block nav %}
+    
+    .home_opc {
+        margin: 2em 5em;
+        border: black 1px solid;
+        height: 90px;
+        font-size: 20px;
+    }
+    
+    .task_select {
+        width: 900px;
+    }
+    
+    .descriptions {
+        margin-top: 4px;
+        font-size: 12px;
+    }
+    
+    .btn-description {
+        position: absolute;
+        margin: -2.3em 70em;
+    }
+    
+    .page-title {
+        font-size: 30px;
+    }
+    
+    .glyphicon-file,
+    .glyphicon-list-alt {
+        margin-right: 10px;
+    }
+</style>
+{% endblock %} {% block body %} {% block nav %}
 <nav class="navbar navbar-inverse header">
     <div class="container-fluid">
         <div class="navbar-header">
-            <span class="glyphicon glyphicon-menu-hamburger"></span><a class="navbar-brand" href="{{ url_for('main.home') }}"><span class="glyphicon glyphicon-check"></span>&nbsp;TaskApp</a>
+            <a class="navbar-brand" href="{{ url_for('main.home') }}"><span class="glyphicon glyphicon-check"></span>&nbsp;TaskApp</a>
         </div>
         <ul class="nav navbar-nav navbar-right" role="tablist">
             <li class="opc_tabs active">
@@ -22,8 +54,75 @@
 </nav>
 {% endblock %} {% for message in get_flashed_messages() %}
 <div class="alert alert-info alert-dismissible" id="alert-info">
-    <button type="button" class="close" data-dismiss="alert">
-                &times;
-            </button> {{message}}
+    <button type="button" class="close" data-dismiss="alert">&times;
+        </button>{{message}}
 </div>
-{% endfor %} {% endblock %}
+{% endfor %} {% block content %}
+<div class="container modal-header page-title">
+    <span class="glyphicon glyphicon-list-alt"></span>Inicio/ Tareas
+</div>
+{% if list_tasks %} {% for task in list_tasks %}
+<div class="container home_opc">
+    <div class="container-fluid">
+        <div class="modal-header">
+            <a href="{{url_for('do_task.examen1')}}">
+                <div class="task_select"><span class="glyphicon glyphicon glyphicon-file"></span>{{task.task_name}}</div>
+            </a><button class="btn btn-default btn-description" data-toggle="modal" data-target="#modal_description" onclick="add_title_to_modal('{{task.task_name}}', '{{task.description}}')">
+                Descripción
+            </button>
+        </div>
+        <ul class="nav navbar-tabs nav-justified descriptions">
+            <li class="nav-item">
+                Grupo: {{task.group_id}}
+            </li>
+            <li class="nav-item">
+                Fecha Entrega: {{task.delivery_date}}
+            </li>
+            <li class="nav-item">
+                Publicado por: {{task.user_publishes}}
+            </li>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="container home_opc">
+    <div class="container-fluid">
+        <div class="modal-header">
+            Sin tareas pendientes.
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="modal fade" id="modal_description" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h3 id="modal_title" style="margin-left: 30px;"></h3>
+            </div>
+            <div class="modal-body">
+                <ul class="nav">
+                    <div class="container" style="font-size: 14px;">
+                        Descripción del Examen:
+                        <p id="task_description" class="text-justify"></p>
+                    </div>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-default btn-success" data-dismiss="modal" value="Aceptar">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block scripts %} {{ super() }}
+<script text="text/javascript">
+    function add_title_to_modal(title, description) {
+        var modal_title = document.getElementById('modal_title');
+        var task_description = document.getElementById('task_description');
+        modal_title.textContent = title;
+        task_description.textContent = description;
+    }
+</script>
+{% endblock %} {% endblock %}
